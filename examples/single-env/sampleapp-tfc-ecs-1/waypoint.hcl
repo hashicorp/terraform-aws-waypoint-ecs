@@ -41,14 +41,12 @@ app "sampleapp-tfc-ecs-1" {
   }
 }
 
-## Dev
 variable "tfc_infra" {
   default = dynamic("terraform-cloud", {
 #    organization = "<YOUR_TFC_ORGANIZATION_HERE>"
     
     # TODO(izaak): remove below before publication
     organization = "izaaktest"
-
     workspace    = "sampleapp-tfc-ecs-1"
   })
   type        = any

@@ -4,6 +4,6 @@
 
 output "waypoint-ecs" {
   value = module.waypoint-ecs
-  description = "all outputs from the waypoint ecs terraform module"
+  description = "All outputs from the waypoint ecs terraform module."
 }
 

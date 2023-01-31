@@ -31,7 +31,6 @@ resource "aws_security_group" "lb" {
 
   # Egress managed by external rule to avoid circular dependency
 
-  # ALB terminates TLS, to take ingress on 443
   ingress {
     description      = "internal traffic"
     from_port        = var.alb_port

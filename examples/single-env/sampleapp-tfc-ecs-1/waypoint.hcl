@@ -36,6 +36,7 @@ app "sampleapp-tfc-ecs-1" {
       security_group_ids  = [var.tfc_infra.waypoint-ecs.security_group_id]
       alb {
         load_balancer_arn = var.tfc_infra.waypoint-ecs.alb_arn
+        subnets           = var.tfc_infra.waypoint-ecs.public_subnets
       }
     }
   }
@@ -47,6 +48,7 @@ variable "tfc_infra" {
     
     # TODO(izaak): remove below before publication
     organization = "izaaktest"
+
     workspace    = "sampleapp-tfc-ecs-1"
   })
   type        = any

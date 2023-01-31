@@ -37,7 +37,7 @@ but can be used by many applications. See `shared_infrastructure.tf`
 
 ## Requirements
 
-### Terraform requirements
+### Terraform Requirements
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |

@@ -23,10 +23,10 @@ locals {
 
 terraform {
   cloud {
-    organization = "<YOUR_TFC_ORGANIZATION_HERE>"
+#    organization = "<YOUR_TFC_ORGANIZATION_HERE>"
 
     # TODO(izaak): remove below before publication
-    #organization = "izaaktest"
+    organization = "izaaktest"
 
     workspaces {
       name = "sampleapp-tfc-ecs-1"

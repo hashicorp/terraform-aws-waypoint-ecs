@@ -14,7 +14,7 @@ resource "aws_security_group" "app" {
 
   # Allow ingress from ALB. App serves non-tls inside the VPC.
   ingress {
-    description      = "internal traffic"
+    description      = "internal [[traffic"
     from_port        = var.application_port
     to_port          = var.application_port
     protocol         = "tcp"

@@ -2,7 +2,7 @@
 ### App-specific config
 
 variable "application_port" {
-  description = "Port on which the application will be listening"
+  description = "Port on which the application will be listening."
   type = number
 }
 
@@ -37,7 +37,7 @@ variable "alb_internal" {
 
 variable "create_ecr" {
   description = <<EOF
-    Whether or not the created an ECR repository.
+    Controls if an ECR repository should be created.
     Generally, apps have one ECR repository for images,
     and all environments pull from that same repository. When using
     this module to create multiple environments (e.g. multiple
@@ -47,42 +47,10 @@ variable "create_ecr" {
   default = true
 }
 
-### Infrastructure Connections
-
-variable "aws_region" {
-  description = ""
-  type        = string
-}
-
-variable "vpc_id" {
-  description = "todo"
-  type = string
-}
-
-variable "public_subnets" {
-  description = "todo"
-  type = list(string)
-}
-
-variable "private_subnets" {
-  description = "todo"
-  type = list(string)
-}
-
-variable "ecs_cluster_name" {
-  description = "todo"
-  type = string
-}
-
-variable "log_group_name" {
-  description = "todo"
-  type = string
-}
-
 ### Infrastructure Config
 
 variable "alb_port" {
-  description = "Port on which the load balancer should listen"
+  description = "Port on which the load balancer should listen."
   type = number
   default = 80
 }
@@ -91,4 +59,69 @@ variable "tags" {
   description = "Tags to apply to resources created by this module."
   type        = map(string)
   default     = {}
+}
+
+### Required Infrastructure connections, necessary for this module to create it's resources.
+
+variable "vpc_id" {
+  description = <<EOF
+    ID of the VPC for the application to deploy into.
+    Application and load balancer security groups will be created in this VPC.
+  EOF
+  type = string
+}
+
+variable "private_subnets" {
+  description = <<EOF
+    List of private subnet IDs to assign the the ENIs of ECS tasks, and internal ALBs.
+    Only required if alb_internal is true, or if you wish to rely on this module's
+    private_subnets output.
+  EOF
+  type = list(string)
+}
+
+variable "public_subnets" {
+  description = <<EOF
+    List of public subnet IDs to assign to internet-facing ALB for this application.
+    Only required if alb_internal is false, or if wish to rely on this module's
+    public_subnets output.
+  EOF
+  type = list(string)
+}
+
+
+### Optional infrastructure connections. The Waypoint ECS plugins will need these
+### values, and it's convenient for the plugin to source from only one TFC workspace.
+### It's also possible to source these in the waypoint.hcl from other workspaces,
+### or define them statically.
+
+variable "aws_region" {
+  description = <<EOF
+    Optional: AWS region for the application to deploy into, e.g. 'us-east-1'.
+
+    If blank, the region output will also be blank.
+  EOF
+  type        = string
+}
+
+variable "ecs_cluster_name" {
+  description = <<EOF
+    Optional: Name of the ecs cluster that the application should be deployed into.
+    This module will not create an ECS cluster, but it will output this
+    name for the Waypoint ECS Platform plugin to consume.
+
+    If blank, the ecs_cluster_name output will also be blank.
+  EOF
+  type = string
+}
+
+variable "log_group_name" {
+  description = <<EOF
+    Optional: Name of the AWS CloudWatch log group for this application to submit logs to.
+    This module will not create an ECS cluster, but it will output this
+    name for the Waypoint ECS Platform plugin to consume.
+
+    If blank, the log_group_name output will also be blank.
+  EOF
+  type = string
 }

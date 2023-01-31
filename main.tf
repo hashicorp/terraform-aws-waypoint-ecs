@@ -7,13 +7,9 @@ terraform {
   }
 }
 
-provider "aws" {
-  region = var.aws_region
-}
-
 locals {
   # Full waypoint name, including the workspace if provided.
-  # E.g. "hashicups_prod", or just "hashicorps" if no workspace
+  # E.g. "hashicups_prod", or just "hashicups" if no workspace
   waypoint_name = var.waypoint_workspace != null ? "${var.waypoint_project}-${var.waypoint_workspace}" : var.waypoint_project
 
   tags = merge(var.tags, {

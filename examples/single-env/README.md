@@ -31,7 +31,7 @@ created by the `terraform-aws-waypoint-ecs` module. See `main.tf`
 This infrastructure is required to deploy an application onto ECS with Waypoint,
 but can be used by many applications. See `shared_infrastructure.tf`
 
-- A VPC in us-east-1
+- A VPC in us-east-1, and all accompanying resources (subnets, nat gateway, etc.)
 - An ECS cluster
 - An AWS CloudWatch Log Group
 
@@ -52,6 +52,11 @@ connecting it to a Terraform Cloud workspace.
 A search of this example directory for `<YOUR_TFC_ORGANIZATION_HERE>` will show where your TFC org needs to be substituted.
 
 For more details, see [Terraform Cloud Getting Started](https://developer.hashicorp.com/terraform/tutorials/cloud-get-started)
+
+NOTE: If you haven't configured Terraform Cloud with credentials to your AWS environment, or added a tfc_agent, you will
+likely wish to change your workspace's [execution mode](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/settings#execution-mode) 
+to `Local` after running `terrraform init` in this repo, so that your local Terraform CLI process operates against AWS.
+
 
 ### Waypoint
 
@@ -90,6 +95,14 @@ This will configure a waypoint runner in the `tf_wp_ecs_ex_single_env` ECS clust
 [on-demand runners](https://developer.hashicorp.com/waypoint/docs/runner/on-demand-runner) inside that same
 cluster to do the work of building, deploying, and releasing.
 
+NOTE: if this isn't the first runner you've installed, then the runner profile created by the above step
+is likely not set as the default. Either change the current default (using `waypoint runner profile list`,
+`waypoint runner profile set -default=false <current-default-name>`, `waypoint runner profile set -default <new-profile-name>`,
+or use [runner profile targeting](https://developer.hashicorp.com/waypoint/docs/runner#runner-targeting) for this app 
+in the waypoint.hcl.
+
+<!-- TODO: when we have a tutorial on managing the runner with terraform, link to that here -->
+
 #### Waypoint ConfigSourcer
 
 Your Waypoint runners will need to be able to talk to Terraform Cloud to read outputs from this module. This is
@@ -120,9 +133,92 @@ Waypoint Github App.
 Once complete, you can locally run `waypoint up` to build, deploy, and release the app onto your ECS cluster.
 
 ```shell
+$ waypoint up
 
+» Operation is queued waiting for job "01GR4Z9KAZAVNGZ4Y1GNZH143T". Waiting for runner assignment...
+  If you interrupt this command, the job will still run in the background.
+  Performing operation on "aws-ecs" with runner profile "ecs-01GR4JXP3WVHBDFC9ERZ7JJJTW"
+
+» Cloning data from Git
+         URL: https://api.hashicorp.cloud/waypoint/2022-04-21/github/clone/hashicorp/terraform-aws-waypoint-ecs
+         Ref: impl
+        Auth: username/password
+  Git Commit: d4616cd05c3a8d800fe2eb10ce3c449db5010210
+   Timestamp: 2023-01-31 22:31:10 +0000 UTC
+     Message: Adding a great new feature
+  
+
+» Building sampleapp-tfc-ecs-1...
+✓ Running build v10
+✓ All services available.
+✓ Set ECR Repository name to 'sampleapp-tfc-ecs-1'
+⚠️ 1 cluster READY, 1 service READY, 1 task MISSING
+⚠️ Waypoint detected that the current deployment is not ready, however your application
+might be available or still starting up.
+⚠️ 1 cluster READY, 1 service READY, 1 task MISSING
+⚠️ Waypoint detected that the current deployment is not ready, however your application
+might be available or still starting up.
+✓ Building Buildpack with kaniko...
+✓ Repository is available and ready: 863953081260.dkr.ecr.us-east-1.amazonaws.com/sampleapp-tfc-ecs-1:d4616cd05c3a8d800fe2eb10ce3c449db5010210
+✓ Executing kaniko...
+ │ Saving localhost:41489/sampleapp-tfc-ecs-1:d4616cd05c3a8d800fe2eb10ce3c449db5010
+ │ 210...
+ │ *** Images (sha256:04cc73f57b19f055c2c65244a3ac6640c84679069bd4ff1f4239d27115321
+ │ dee):
+ │       localhost:41489/sampleapp-tfc-ecs-1:d4616cd05c3a8d800fe2eb10ce3c449db50102
+ │ 10
+ │ Adding cache layer 'heroku/nodejs-engine:dist'
+ │ Adding cache layer 'heroku/nodejs-npm:toolbox'
+ │ INFO[0098] Taking snapshot of full filesystem...
+ │ INFO[0157] Skipping push to container registry due to --no-push flag
+✓ Image pushed to '863953081260.dkr.ecr.us-east-1.amazonaws.com/sampleapp-tfc-ecs-1:d4616cd05c3a8d800fe2eb10ce3c449db5010210'
+✓ Running push build v9
+✓ All services available.
+✓ Set ECR Repository name to 'sampleapp-tfc-ecs-1'
+
+» Deploying sampleapp-tfc-ecs-1...
+✓ Running deploy v2
+✓ Deployment resources created
+✓ Using existing ECS cluster tf_wp_ecs_ex_single_env
+✓ Discovered alb subnets
+✓ Using external security group sampleapp-tfc-ecs-1-inbound
+✓ Discovered service subnets
+✓ Using specified security group IDs
+✓ Existing ALB specified - no need to create or discover an ALB
+✓ Using existing log group ecs_cluster_tf_wp_ecs_ex_single_env
+✓ Created target group sampleapp-tfc-ecs-1-01GR4ZG55ZXG
+✓ Created ALB Listener
+✓ Using existing execution IAM role "sampleapp-tfc-ecs-1_ecs_execution"
+✓ Found existing task IAM role: sampleapp-tfc-ecs-1_ecs_task
+✓ Registered Task definition: waypoint-sampleapp-tfc-ecs-1
+✓ Created ECS Service sampleapp-tfc-ecs-1-01GR4ZG55ZXG
+✓ Finished building report for ecs deployment
+✓ Determining status of ecs service sampleapp-tfc-ecs-1-01GR4ZG55ZXG
+✓ Found existing ECS cluster: tf_wp_ecs_ex_single_env
+
+✓ Finished building report for ecs deployment
+✓ Determining status of ecs service sampleapp-tfc-ecs-1-01GR4ZG55ZXG
+✓ Found existing ECS cluster: tf_wp_ecs_ex_single_env
+
+» Releasing sampleapp-tfc-ecs-1...
+✓ Running release v1
+✓ Finished ECS release
+
+
+» Variables used:
+  VARIABLE | VALUE | TYPE | SOURCE  
+-----------+-------+------+---------
+
+
+The deploy was successful! This deploy was done in-place so the deployment
+URL may match a previous deployment.
+
+   Release URL: http://sampleapp-tfc-ecs-1-757083762.us-east-1.elb.amazonaws.com
 ```
 
+You can visit the release URL in a browser to verify the deployment, and run `waypoint logs` to see the app's runtime logs.
+
+You can also modify the app, push your changes, and deploy them by again running `waypoint up`.
 
 ## Providers
 

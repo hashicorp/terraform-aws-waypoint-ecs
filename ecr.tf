@@ -9,8 +9,8 @@ module "ecr" {
   count = var.create_ecr ? 1 : 0
 
 
-  repository_name = local.ecs_repository_name
-  create_lifecycle_policy           = false
+  repository_name         = local.ecs_repository_name
+  create_lifecycle_policy = false
 
   tags = var.tags
 }

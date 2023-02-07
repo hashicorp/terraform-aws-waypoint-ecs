@@ -3,7 +3,7 @@
 
 variable "application_port" {
   description = "Port on which the application will be listening."
-  type = number
+  type        = number
 }
 
 ### Waypoint config
@@ -31,8 +31,8 @@ variable "alb_internal" {
     If set, the created ALB will have a scheme of internal,
     otherwise by default it has a scheme of internet-facing.
   EOF
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "create_ecr" {
@@ -43,16 +43,16 @@ variable "create_ecr" {
     this module to create multiple environments (e.g. multiple
     workspaces), only one environment should create the registry.
   EOF
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 ### Infrastructure Config
 
 variable "alb_port" {
   description = "Port on which the load balancer should listen."
-  type = number
-  default = 80
+  type        = number
+  default     = 80
 }
 
 variable "tags" {
@@ -68,7 +68,7 @@ variable "vpc_id" {
     ID of the VPC for the application to deploy into.
     Application and load balancer security groups will be created in this VPC.
   EOF
-  type = string
+  type        = string
 }
 
 variable "private_subnets" {
@@ -77,7 +77,7 @@ variable "private_subnets" {
     Only required if alb_internal is true, or if you wish to rely on this module's
     private_subnets output.
   EOF
-  type = list(string)
+  type        = list(string)
 }
 
 variable "public_subnets" {
@@ -86,7 +86,7 @@ variable "public_subnets" {
     Only required if alb_internal is false, or if wish to rely on this module's
     public_subnets output.
   EOF
-  type = list(string)
+  type        = list(string)
 }
 
 
@@ -112,7 +112,7 @@ variable "ecs_cluster_name" {
 
     If blank, the ecs_cluster_name output will also be blank.
   EOF
-  type = string
+  type        = string
 }
 
 variable "log_group_name" {
@@ -123,5 +123,5 @@ variable "log_group_name" {
 
     If blank, the log_group_name output will also be blank.
   EOF
-  type = string
+  type        = string
 }

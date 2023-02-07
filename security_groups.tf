@@ -14,11 +14,11 @@ resource "aws_security_group" "app" {
 
   # Allow ingress from ALB. App serves non-tls inside the VPC.
   ingress {
-    description      = "internal [[traffic"
-    from_port        = var.application_port
-    to_port          = var.application_port
-    protocol         = "tcp"
-    security_groups = [ aws_security_group.lb.id ]
+    description     = "internal [[traffic"
+    from_port       = var.application_port
+    to_port         = var.application_port
+    protocol        = "tcp"
+    security_groups = [aws_security_group.lb.id]
   }
 
   tags = local.tags
@@ -44,10 +44,10 @@ resource "aws_security_group" "lb" {
 }
 
 resource "aws_security_group_rule" "external_egress" {
-  type              = "egress"
-  from_port        = var.application_port
-  to_port          = var.application_port
-  protocol         = "tcp"
+  type                     = "egress"
+  from_port                = var.application_port
+  to_port                  = var.application_port
+  protocol                 = "tcp"
   source_security_group_id = aws_security_group.app.id
-  security_group_id = aws_security_group.lb.id
+  security_group_id        = aws_security_group.lb.id
 }

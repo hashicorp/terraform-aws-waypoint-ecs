@@ -23,7 +23,7 @@ locals {
 
 terraform {
   cloud {
-    organization = "<YOUR_TFC_ORGANIZATION_HERE>"
+    organization = "izaaktest"
     workspaces {
       name = "sampleapp-tfc-ecs-1"
     }

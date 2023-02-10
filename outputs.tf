@@ -41,7 +41,7 @@ output "public_subnets" {
 }
 
 output "ecs_cluster_name" {
-  value       = var.ecs_cluster_name
+  value       = data.aws_ecs_cluster.waypoint_ecs_cluster.cluster_name
   description = "Name of the ecs cluster that the application should be deployed into."
 }
 

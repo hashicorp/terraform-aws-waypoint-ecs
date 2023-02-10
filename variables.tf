@@ -61,6 +61,19 @@ variable "tags" {
   default     = {}
 }
 
+variable "force_delete_ecr" {
+  description = <<EOF
+    Controls if an ECR repository should be forcibly deleted.
+    Waypoint doesn't delete images from a registry. If there
+    have been Waypoint builds and you try to `terraform destroy`
+    the ECR repository resource, and this variable is false, the
+    destroy will fail citing existing images. If this variable
+    is true, it will forcibly delete all the images
+  EOF
+  type        = bool
+  default     = false
+}
+
 ### Required Infrastructure connections, necessary for this module to create it's resources.
 
 variable "vpc_id" {

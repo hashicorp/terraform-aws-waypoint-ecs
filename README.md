@@ -51,6 +51,9 @@ module "waypoint-ecs" {
   # Module config
   alb_internal = false
   create_ecr   = true
+  
+  # Uncomment below to enable deleting the registry even if there are images
+  # force_delete_ecr = true
 
   # Existing infrastructure
   aws_region       = "us-east-1"

@@ -7,6 +7,10 @@ terraform {
   }
 }
 
+data "aws_ecs_cluster" "waypoint_ecs_cluster" {
+  cluster_name = var.ecs_cluster_name
+}
+
 locals {
   # Full waypoint name, including the workspace if provided.
   # E.g. "hashicups_prod", or just "hashicups" if no workspace

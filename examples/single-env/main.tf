@@ -23,9 +23,9 @@ locals {
 
 terraform {
   cloud {
-    organization = "izaaktest"
+    organization = "brotherhood-of-devops"
     workspaces {
-      name = "sampleapp-tfc-ecs-1"
+      name = "nuka-cola"
     }
   }
 }

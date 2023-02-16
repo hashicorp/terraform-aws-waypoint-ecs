@@ -44,8 +44,8 @@ app "sampleapp-tfc-ecs-1" {
 
 variable "tfc_infra" {
   default = dynamic("terraform-cloud", {
-    organization = "<YOUR_TFC_ORGANIZATION_HERE>"
-    workspace    = "sampleapp-tfc-ecs-1"
+    organization = "brotherhood-of-devops"
+    workspace    = "nuka-cola"
   })
   type        = any
   sensitive   = false

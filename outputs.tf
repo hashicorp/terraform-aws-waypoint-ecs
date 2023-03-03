@@ -30,7 +30,7 @@ output "security_group_id" {
 output "private_subnets" {
   value       = var.private_subnets
   description = <<EOF
-    List of private subnet IDs to assign the the ENIs of ECS tasks.
+    List of private subnet IDs to assign the ENIs of ECS tasks.
     Same as input variable private_subnets.
   EOF
 }

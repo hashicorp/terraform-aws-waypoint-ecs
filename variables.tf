@@ -86,7 +86,7 @@ variable "vpc_id" {
 
 variable "private_subnets" {
   description = <<EOF
-    List of private subnet IDs to assign the the ENIs of ECS tasks, and internal ALBs.
+    List of private subnet IDs to assign the ENIs of ECS tasks, and internal ALBs.
     Only required if alb_internal is true, or if you wish to rely on this module's
     private_subnets output.
   EOF

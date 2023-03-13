@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 resource "aws_security_group" "app" {
   name        = "${local.waypoint_name}_internal"
   description = "Security group for waypoint project ${var.waypoint_project}"

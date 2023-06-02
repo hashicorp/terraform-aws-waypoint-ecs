@@ -51,12 +51,14 @@ resource "aws_iam_role" "task_role" {
 }
 
 data "aws_iam_policy" "custom_task_role_policies" {
-  for_each = var.task_role_custom_policy_arns
-  arn      = each.value
+  count    = length(var.task_role_custom_policy_arns)
+  arn      = var.task_role_custom_policy_arns[count.index]
 }
 
 resource "aws_iam_role_policy_attachment" "custom_task_role_policies" {
-  for_each   = data.aws_iam_policy.custom_task_role_policies
+  for_each = {
+    for policy in data.aws_iam_policy.custom_task_role_policies : policy.name => policy
+  }
   role       = aws_iam_role.task_role.name
   policy_arn = each.value.arn
 }

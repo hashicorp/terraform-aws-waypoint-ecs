@@ -138,3 +138,11 @@ variable "log_group_name" {
   EOF
   type        = string
 }
+
+variable "task_role_custom_policy_arns" {
+  description = <<EOF
+A list of IAM policy ARNs which are desired to be attached to the IAM task role.
+EOF
+  type        = list(string)
+  default     = []
+}

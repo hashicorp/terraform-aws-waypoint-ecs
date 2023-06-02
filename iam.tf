@@ -50,5 +50,16 @@ resource "aws_iam_role" "task_role" {
   inline_policy {}
 }
 
+data "aws_iam_policy" "custom_task_role_policies" {
+  for_each = var.task_role_custom_policy_arns
+  arn      = each.value
+}
+
+resource "aws_iam_role_policy_attachment" "custom_task_role_policies" {
+  for_each   = data.aws_iam_policy.custom_task_role_policies
+  role       = aws_iam_role.task_role.name
+  policy_arn = each.value.arn
+}
+
 # Future improvement: add policy to waypoint runner role to allow registry push
 

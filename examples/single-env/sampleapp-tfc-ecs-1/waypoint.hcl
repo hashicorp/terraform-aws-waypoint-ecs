@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 project = "sampleapp-tfc-ecs-1"
 
 app "sampleapp-tfc-ecs-1" {
